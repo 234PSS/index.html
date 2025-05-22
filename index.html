@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Amar Gan</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://www.dl.dropboxusercontent.com/scl/fi/p68ts8lzjq8gnza5n71r1/WhatsApp-Image-2025-05-22-at-8.01.11-PM.jpeg?rlkey=mj8iemwpxfs7gdojhzb6yd28c&st=hi7id916');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      backdrop-filter: blur(5px);
+    }
+
+    .player {
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      border-radius: 25px;
+      padding: 30px 25px;
+      width: 340px;
+      max-width: 90%;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .player h2 {
+      margin-bottom: 15px;
+      color: #d6336c;
+      font-size: 24px;
+    }
+
+    .song-title {
+      font-size: 16px;
+      color: #6c757d;
+      margin-bottom: 15px;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 10px;
+      outline: none;
+      border-radius: 10px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .btn {
+      background: #ff4d6d;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 0 5px 10px rgba(255, 105, 135, 0.3);
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn:hover {
+      background: #ff3360;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="player">
+    <h2> Lopar Gan 🎶</h2>
+    <div class="song-title" id="songTitle">Loading...</div>
+    <audio id="audio" controls></audio>
+    <div class="controls">
+      <button class="btn" onclick="prevSong()">⏮ Prev</button>
+      <button class="btn" onclick="nextSong()">Next ⏭</button>
+    </div>
+  </div>
+
+  <script>
+    const songs = [
+      { name: "Behaya", file: "https://www.dl.dropboxusercontent.com/scl/fi/l02tkn0pc54a966v823gr/Behaya.mp3?rlkey=dch0s6ja8uzcc5i3zvop5umj8&st=hz6d3l0s" },
+      { name: "Ei Srabon", file: "https://www.dl.dropboxusercontent.com/scl/fi/veeibu3l3pca4h1kv12ew/Ei-Srabon.mp3?rlkey=39qti69lkgrxhx53gp7oay45w&st=4mhz2yxe" },
+      { name: "Era Sukher Lagi Chahe Prem", file: "https://www.dl.dropboxusercontent.com/scl/fi/jypc3jhmhw1oc1qu41ndv/Era-Sukher-Lagi-Chahe-Prem.mp3?rlkey=22jyj2e1n5lxm5zediwgrz7og&st=ztm7id1q" },
+      { name: "Hey Shokha (Rabindrasangeet)", file: "https://www.dl.dropboxusercontent.com/scl/fi/ej0rr21z4oz0q4m1g10av/Hey-Shokha-Rabindrasangeet-Mr-Jat.in.mp3?rlkey=k7e7wi2qhdtvrqtr7bt4l3b3n&st=6ckllo8j" },
+      { name: "Hridoyer Rang", file: "https://www.dl.dropboxusercontent.com/scl/fi/fvjg48tz95bektg405mkj/Hridoyer-Rang-128-Kbps-Mp3Jio.Com.mp3?rlkey=rmr4n8kssbk033xuo9jochmin&st=8rxcocui" },
+      { name: "Jodi Takey Chai", file: "https://www.dl.dropboxusercontent.com/scl/fi/4qnpo9l5c6d8otv2yshhc/Jodi-Takey-Chai-PenduJatt.Com.Se.mp3?rlkey=lw6p8iojlcx5n0ryrzmvbdrkg&st=4ggfqrxs" },
+      { name: "Mayabono Biharini", file: "https://www.dl.dropboxusercontent.com/scl/fi/l1nlsxh6405l7i9d3m9e5/Mayabono-Biharini-Mr-Jat.in.mp3?rlkey=k5njers1w8r9g47j5rjn9b153&st=tfr6ovxy" },
+      { name: "RADHA (From ASUR)", file: "https://www.dl.dropboxusercontent.com/scl/fi/c2x4xxgpt566moxxadhtf/RADHA-From-ASUR-Extended-Version.mp3?rlkey=nzsqjubpg12xe03bggsdmt3i1&st=9ooqnhi0" },
+      { name: "Rupkothar Jogote", file: "https://www.dl.dropboxusercontent.com/scl/fi/5bjbm2dvrx5nwnxjwm52a/Rupkothar-Jogote-Rehaan-Rasul-MyMp3Song.mp3?rlkey=w69pgfjjz5axkut8buixfy3jv&st=la9tvp6e" },
+      { name: "Tomar Moner Bhetor", file: "https://www.dl.dropboxusercontent.com/scl/fi/n7zh2tf5s6mma0g53zj2p/Tomar-Moner-Bhetor.mp3?rlkey=5foski4ihsoj9f5ghthxm6n6m&st=au918yy5" },
+      { name: "Tumi Jake Bhalobaso (Male)", file: "https://www.dl.dropboxusercontent.com/scl/fi/8dqmluljo0j4dqk56snvt/Tumi-Jake-Bhalobaso-Male-Praktan-Mr-Jat.in.mp3?rlkey=kli9gw7e9vv8yfh6qmknowqb1&st=mha77x4a" },
+      { name: "Yaatri – Nupur", file: "https://www.dl.dropboxusercontent.com/scl/fi/0aek5v5f5sl8bels2wwof/Yaatri-Nupur-music.com.bd.mp3?rlkey=k8rnfk7mgsiveyifc4e53o4et&st=cdvzf9bh" }
+    ];
+
+    let currentIndex = 0;
+    const audio = document.getElementById("audio");
+    const title = document.getElementById("songTitle");
+
+    function loadSong(index) {
+      audio.src = songs[index].file;
+      title.textContent = songs[index].name;
+      audio.play();
+    }
+
+    function nextSong() {
+      currentIndex = (currentIndex + 1) % songs.length;
+      loadSong(currentIndex);
+    }
+
+    function prevSong() {
+      currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+      loadSong(currentIndex);
+    }
+
+    audio.addEventListener("play", () => {
+      document.querySelectorAll("audio").forEach((el) => {
+        if (el !== audio) el.pause();
+      });
+    });
+
+    window.onload = () => {
+      loadSong(currentIndex);
+    };
+  </script>
+
+</body>
+</html>
